@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Home / X</title>
+    <link rel="shortcut icon" href="https://abs.twimg.com/favicons/twitter-pip.3.ico">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="./css/output.css">
+    <style>
+        /* --------- Reset --------- */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            transition: background 0.3s, color 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* --------- Icons always inline-block so transform works --------- */
+        .material-symbols-outlined {
+            display: inline-block;
+        }
+
+        /* --------- Hide scrollbars globally on scrollable containers --------- */
+        .no-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            overflow-y: auto;
+        }
+
+        /* --------- Notification pulse --------- */
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.5);
+                opacity: 0.6;
+            }
+        }
+
+        .notif-dot {
+            animation: pulse-dot 1.6s ease-in-out infinite;
+        }
+
+        /* --------- Heart burst --------- */
+        @keyframes heart-pop {
+            0% {
+                transform: scale(1);
+            }
+
+            25% {
+                transform: scale(1.6);
+            }
+
+            50% {
+                transform: scale(0.85);
+            }
+
+            75% {
+                transform: scale(1.15);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .heart-pop {
+            animation: heart-pop 0.45s ease forwards;
+            display: inline-block;
+        }
+
+        /* --------- Count animations --------- */
+        @keyframes count-up {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes count-down {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .count-up {
+            animation: count-up 0.22s ease forwards;
+        }
+
+        .count-down {
+            animation: count-down 0.22s ease forwards;
+        }
+
+        /* --------- Retweet spin --------- */
+        @keyframes rt-spin {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+
+            50% {
+                transform: rotate(180deg) scale(1.25);
+            }
+
+            100% {
+                transform: rotate(360deg) scale(1);
+            }
+        }
+
+        .rt-spin {
+            animation: rt-spin 0.4s ease forwards;
+            display: inline-block;
+        }
+
+        /* --------- Bookmark pop --------- */
+        @keyframes bookmark-pop {
+            0% {
+                transform: scale(1);
+            }
+
+            40% {
+                transform: scale(1.5);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .bookmark-pop {
+            animation: bookmark-pop 0.32s ease forwards;
+            display: inline-block;
+        }
+
+        /* --------- Skeleton shimmer --------- */
+        @keyframes shimmer {
+            from {
+                background-position: -400px 0;
+            }
+
+            to {
+                background-position: 400px 0;
+            }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #1a1a1a 25%, #2d2d2d 50%, #1a1a1a 75%);
+            background-size: 400px 100%;
+            animation: shimmer 1.4s infinite linear;
+            border-radius: 6px;
+        }
+
+        body.light .skeleton {
+            background: linear-gradient(90deg, #e8e8e8 25%, #f0f0f0 50%, #e8e8e8 75%);
+            background-size: 400px 100%;
+        }
+
+        /* --------- Lightbox --------- */
+        #lightbox {
+            display: none;
+        }
+
+        #lightbox.open {
+            display: flex;
+        }
+
+        /* --------- Reply box slide --------- */
+        .reply-box {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.32s ease, opacity 0.28s ease;
+            opacity: 0;
+        }
+
+        .reply-box.open {
+            max-height: 200px;
+            opacity: 1;
+        }
+
+        /* --------- View tick --------- */
+        @keyframes tick-up {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            40% {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            41% {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tick-anim {
+            animation: tick-up 0.38s ease;
+        }
+
+        /* --------- Thread line --------- */
+        .thread-line::before {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 54px;
+            bottom: -8px;
+            width: 2px;
+            background: #2f3336;
+        }
+
+        /* --------- Confetti --------- */
+        .confetti-piece {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            pointer-events: none;
+            z-index: 9999;
+            animation: confetti-fall 1s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            from {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(220px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* --------- Tab indicator --------- */
+        .tab-bar {
+            position: relative;
+        }
+
+        .tab-indicator {
+            position: absolute;
+            bottom: 0;
+            height: 4px;
+            background: #1d9bf0;
+            border-radius: 9999px;
+            transition: left 0.25s cubic-bezier(.4, 0, .2, 1),
+                width 0.25s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        /* --------- Char ring --------- */
+        .char-ring {
+            transform: rotate(-90deg);
+        }
+
+        .char-ring circle {
+            transition: stroke-dashoffset 0.2s ease;
+        }
+
+        /* --------- Following empty state --------- */
+        .empty-state {
+            display: none;
+        }
+
+        .empty-state.visible {
+            display: flex;
+        }
+
+        /* --------- Trending badges --------- */
+        .badge-breaking {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .badge-hot {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .badge-new {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        /* ----------------------------------------------------------------------
+           MOBILE BOTTOM NAV (hidden on sm+)
+           ---------------------------------------------------------------------- */
+        #mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            z-index: 50;
+            background: rgba(0, 0, 0, 0.96);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid #2f3336;
+            display: flex;
+            align-items: center;
+            /* safe area for notched phones */
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        @media (min-width: 640px) {
+            #mobile-nav {
+                display: none !important;
+            }
+        }
+
+        body.dim #mobile-nav {
+            background: rgba(21, 32, 43, 0.96);
+            border-color: #38444d;
+        }
+
+        body.light #mobile-nav {
+            background: rgba(255, 255, 255, 0.96);
+            border-color: #eff3f4;
+        }
+
+        body.light #mobile-nav .mob-icon {
+            color: #0f1419;
+        }
+
+        body.light #mobile-nav .mob-svg {
+            fill: #0f1419;
+        }
+
+        .mob-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            position: relative;
+            transition: opacity 0.15s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .mob-btn:active {
+            opacity: 0.6;
+        }
+
+        .mob-icon {
+            font-size: 24px;
+            color: white;
+        }
+
+        /* Feed gets bottom padding on mobile so nav doesn't cover content */
+        #feed-wrapper {
+            padding-bottom: 56px;
+        }
+
+        @media (min-width: 640px) {
+            #feed-wrapper {
+                padding-bottom: 0;
+            }
+        }
+
+        /* ----------------------------------------------------------------------
+           ACTION BAR --- fluid, no fixed max-w
+           ---------------------------------------------------------------------- */
+        .action-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: min(320px, 100%);
+            margin-top: 10px;
+            color: #6b7280;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            padding: 6px;
+            border-radius: 9999px;
+            transition: background 0.15s, color 0.15s;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: inherit;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .action-btn .material-symbols-outlined {
+            font-size: 17px;
+        }
+
+        @media (max-width: 380px) {
+            .action-btn {
+                padding: 5px 4px;
+                gap: 2px;
+                font-size: 11px;
+            }
+
+            .action-btn .material-symbols-outlined {
+                font-size: 15px;
+            }
+        }
+
+        .action-btn:hover.reply-btn {
+            color: #1d9bf0;
+            background: rgba(29, 155, 240, 0.1);
+        }
+
+        .action-btn:hover.rt-btn {
+            color: #4ade80;
+            background: rgba(74, 222, 128, 0.1);
+        }
+
+        .action-btn:hover.like-btn {
+            color: #ec4899;
+            background: rgba(236, 72, 153, 0.1);
+        }
+
+        .action-btn:hover.views-btn {
+            color: #1d9bf0;
+            background: rgba(29, 155, 240, 0.1);
+        }
+
+        .action-btn:hover.bk-btn {
+            color: #1d9bf0;
+            background: rgba(29, 155, 240, 0.1);
+        }
+
+        /* ----------------------------------------------------------------------
+           COMPOSE --- responsive text size
+           ---------------------------------------------------------------------- */
+        #compose-input {
+            font-size: clamp(15px, 4vw, 20px);
+        }
+
+        /* ----------------------------------------------------------------------
+           APP ICON BUTTONS
+           ---------------------------------------------------------------------- */
+        .app-icon-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: #000;
+            border: 1px solid #2f3336;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color 0.2s, transform 0.2s;
+            flex-shrink: 0;
+        }
+
+        @media (hover: hover) {
+            .app-icon-btn:hover {
+                border-color: #555;
+                transform: scale(1.06);
+            }
+        }
+
+        .app-icon-btn:active {
+            transform: scale(0.94);
+        }
+
+        /* ----------------------------------------------------------------------
+           LAYOUT --- sidebar collapses on mobile
+           ---------------------------------------------------------------------- */
+        /* Feed takes full width on < 640px (sidebar hidden) */
+        #sidebar {
+            display: none;
+        }
+
+        @media (min-width: 640px) {
+            #sidebar {
+                display: block;
+            }
+        }
+
+        /* ----------------------------------------------------------------------
+           THEMES
+           ---------------------------------------------------------------------- */
+        /* ------ DIM ------ */
+        body.dim {
+            background: #15202b;
+            color: #fff;
+        }
+
+        body.dim .bg-black {
+            background: #15202b !important;
+        }
+
+        body.dim .bg-black\/80 {
+            background: rgba(21, 32, 43, 0.88) !important;
+        }
+
+        body.dim .bg-\[\#16181c\] {
+            background: #1e2732 !important;
+        }
+
+        body.dim .bg-\[\#202327\] {
+            background: #253341 !important;
+        }
+
+        body.dim .border-gray-800 {
+            border-color: #38444d !important;
+        }
+
+        body.dim .divide-gray-800>*+* {
+            border-color: #38444d !important;
+        }
+
+        body.dim .bg-gray-700 {
+            background: #2d3741 !important;
+        }
+
+        body.dim #mobile-nav {
+            background: rgba(21, 32, 43, 0.96);
+            border-color: #38444d;
+        }
+
+        /* ------ LIGHT ------ */
+        body.light {
+            background: #fff;
+            color: #0f1419;
+        }
+
+        body.light .bg-black {
+            background: #fff !important;
+        }
+
+        body.light .bg-black\/80 {
+            background: rgba(255, 255, 255, 0.93) !important;
+        }
+
+        body.light .bg-black\/90 {
+            background: rgba(0, 0, 0, 0.85) !important;
+        }
+
+        body.light .bg-black\/50 {
+            background: rgba(0, 0, 0, 0.5) !important;
+        }
+
+        body.light .bg-\[\#16181c\] {
+            background: #f7f9f9 !important;
+        }
+
+        body.light .bg-\[\#202327\] {
+            background: #eff3f4 !important;
+        }
+
+        body.light .bg-gray-700 {
+            background: #e1e8ed !important;
+        }
+
+        body.light .bg-gray-800 {
+            background: #e7ecf0 !important;
+        }
+
+        body.light .hover\:bg-gray-900:hover {
+            background: #e7ecf0 !important;
+        }
+
+        body.light .hover\:bg-gray-800\/60:hover {
+            background: rgba(231, 236, 240, 0.8) !important;
+        }
+
+        body.light .hover\:bg-white\/\[0\.03\]:hover {
+            background: rgba(0, 0, 0, 0.03) !important;
+        }
+
+        body.light .hover\:bg-gray-900\/40:hover {
+            background: rgba(0, 0, 0, 0.05) !important;
+        }
+
+        body.light .divide-gray-800>*+* {
+            border-color: #eff3f4 !important;
+        }
+
+        body.light .border-gray-800 {
+            border-color: #eff3f4 !important;
+        }
+
+        body.light .border-gray-700 {
+            border-color: #cfd9de !important;
+        }
+
+        /* text */
+        body.light .text-white {
+            color: #0f1419 !important;
+        }
+
+        body.light .text-gray-100 {
+            color: #0f1419 !important;
+        }
+
+        body.light .text-gray-300 {
+            color: #333 !important;
+        }
+
+        body.light .text-gray-400 {
+            color: #536471 !important;
+        }
+
+        body.light .text-gray-500 {
+            color: #536471 !important;
+        }
+
+        body.light .text-gray-600 {
+            color: #536471 !important;
+        }
+
+        body.light .text-gray-700 {
+            color: #536471 !important;
+        }
+
+        /* icons */
+        body.light .material-symbols-outlined {
+            color: #0f1419 !important;
+        }
+
+        body.light .text-\[\#1d9bf0\] {
+            color: #1d9bf0 !important;
+        }
+
+        body.light .text-\[\#1d9bf0\] .material-symbols-outlined {
+            color: #1d9bf0 !important;
+        }
+
+        /* svg */
+        body.light .fill-white {
+            fill: #0f1419 !important;
+        }
+
+        body.light svg[fill="currentColor"] {
+            color: #0f1419 !important;
+        }
+
+        /* inputs */
+        body.light input,
+        body.light textarea {
+            color: #0f1419 !important;
+            background: transparent !important;
+        }
+
+        body.light ::placeholder {
+            color: #8899a6 !important;
+        }
+
+        /* action bar */
+        body.light .action-bar {
+            color: #536471;
+        }
+
+        /* tab bar */
+        body.light .backdrop-blur-md {
+            background: rgba(255, 255, 255, 0.93) !important;
+        }
+
+        /* post text */
+        body.light article p {
+            color: #0f1419 !important;
+        }
+
+        body.light article .font-bold {
+            color: #0f1419 !important;
+        }
+
+        body.light article .text-gray-500 {
+            color: #536471 !important;
+        }
+
+        body.light article .count {
+            color: #536471 !important;
+        }
+
+        /* app icons */
+        body.light .app-icon-btn {
+            background: #f7f9f9 !important;
+            border-color: #e1e8ed !important;
+        }
+
+        body.light .app-icon-btn .fill-white {
+            fill: #0f1419 !important;
+        }
+
+        /* trending badges stay colored */
+        body.light .badge-breaking {
+            background: #fee2e2 !important;
+            color: #dc2626 !important;
+        }
+
+        body.light .badge-hot {
+            background: #fef3c7 !important;
+            color: #d97706 !important;
+        }
+
+        body.light .badge-new {
+            background: #dcfce7 !important;
+            color: #16a34a !important;
+        }
+
+        /* mobile nav */
+        body.light #mobile-nav {
+            background: rgba(255, 255, 255, 0.96);
+            border-color: #eff3f4;
+        }
+
+        body.light .mob-icon {
+            color: #0f1419 !important;
+        }
+
+        body.light .mob-svg {
+            fill: #0f1419 !important;
+        }
+
+        body.light .notif-dot {
+            border-color: #fff !important;
+        }
+
+        /* right sidebar search input */
+        body.light .focus\:bg-black:focus {
+            background: #fff !important;
+        }
+    </style>
+</head>
+
+<body class="bg-black text-white overflow-x-hidden">
+
+    <!-- ===================== LIGHTBOX ===================== -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-black/90 items-center justify-center" onclick="closeLightbox()">
+        <button class="absolute top-4 right-4 text-white bg-black/50 rounded-full p-2 hover:bg-black/80">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+        <img id="lightbox-img" class="max-w-[90vw] max-h-[90vh] rounded-2xl object-contain" src="" alt="">
+    </div>
+
+    <!-- ===================== MOBILE BOTTOM NAV ===================== -->
+    <nav id="mobile-nav">
+        <button class="mob-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+            <span class="material-symbols-outlined mob-icon">home</span>
+        </button>
+        <button class="mob-btn">
+            <span class="material-symbols-outlined mob-icon">search</span>
+        </button>
+        <button class="mob-btn" style="position:relative">
+            <span class="material-symbols-outlined mob-icon">notifications</span>
+            <span
+                class="notif-dot absolute top-2 right-[calc(50%-18px)] w-2.5 h-2.5 bg-[#1d9bf0] rounded-full border-2 border-black"></span>
+        </button>
+        <button class="mob-btn" onclick="openEmail()">
+            <svg viewBox="0 0 24 24" class="w-[22px] h-[22px] fill-white mob-svg">
+                <path
+                    d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+            </svg>
+        </button>
+        <button class="mob-btn">
+            <div class="w-7 h-7 rounded-full bg-gray-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[14px] text-gray-400">person</span>
+            </div>
+        </button>
+    </nav>
+
+    <!-- ===================== LAYOUT ===================== -->
+    <div class="flex max-w-[1280px] mx-auto">
+
+        <!-- ===== SIDEBAR (hidden on mobile, icon-only on sm-md, full on lg+) ===== -->
+        <div id="sidebar" class="w-[60px] md:w-[72px] lg:w-[240px] xl:w-[275px] flex-shrink-0">
+            <div class="no-scroll flex flex-col sticky top-0 h-screen py-2">
+
+                <!-- Logo -->
+                <div class="mb-1 px-2 lg:px-3">
+                    <div
+                        class="w-12 h-12 flex items-center justify-center rounded-full hover:bg-gray-900 cursor-pointer transition-colors">
+                        <svg viewBox="0 0 24 24" class="w-6 h-6 fill-white">
+                            <path
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Nav links -->
+                <ul class="flex flex-col space-y-0.5 w-full flex-1">
+                    <li><a class="nav-link flex items-center gap-4 justify-center lg:justify-start w-full lg:w-fit px-3 py-3 rounded-full hover:bg-gray-900 cursor-pointer transition-colors text-[#1d9bf0] font-bold"
+                            data-page="home" onclick="navigateTo('home')">
+                            <span class="material-symbols-outlined text-[26px] flex-shrink-0">home</span>
+                            <span class="hidden lg:block text-xl">Home</span>
+                        </a></li>
+                    <li><a class="nav-link flex items-center gap-4 justify-center lg:justify-start w-full lg:w-fit px-3 py-3 rounded-full hover:bg-gray-900 cursor-pointer transition-colors"
+                            data-page="explore" onclick="navigateTo('explore')">
+                            <span class="material-symbols-outlined text-[26px] flex-shrink-0">search</span>
+                            <span class="hidden lg:block text-xl">Explore</span>
+                        </a></li>
+                    <li><a class="nav-link flex items-center gap-4 justify-center lg:justify-start w-full lg:w-fit px-3 py-3 rounded-full hover:bg-gray-900 cursor-pointer transition-colors"
+                            data-page="notifications" onclick="navigateTo('notifications')">
+                            <span class="relative">
+                                <span class="material-symbols-outlined text-[26px] flex-shrink-0">notifications</span>
+                                <span
+                                    class="notif-dot absolute -top-1 -right-1 w-3 h-3 bg-[#1d9bf0] rounded-full border-2 border-black flex items-center justify-center">
+                                    <span class="text-[7px] font-bold text-white leading-none">3</span>
+                                </span>
+                            </span>
+                            <span class="hidden lg:block text-xl">Notifications</span>
+                        </a></li>
+                    <li><a class="nav-link flex items-center gap-4 justify-center lg:justify-start w-full lg:w-fit px-3 py-3 rounded-full hover:bg-gray-900 cursor-pointer transition-colors"
+                            data-page="grok" onclick="navigateTo('grok')">
+                            <span class="flex-shrink-0 w-[26px] h-[26px] flex items-center justify-center">
+                                <svg viewBox="0 0 24 24" class="w-[22px] h-[22px]" fill="currentColor">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13l-4 8 8-4-8 4 4-8z" />
+                                </svg>
+                            </span>
+                            <span class="hidden lg:block text-xl">Grok</span>
+                        </a></li>
+                    <li><a class="nav-link flex items-center gap-4 justify-center lg:justify-start w-full lg:w-fit px-3 py-3 rounded-full hover:bg-gray-900 cursor-pointer transition-colors"
+                            data-page="messages" onclick="navigateTo('messages')">
+                            <span class="flex-shrink-0 w-[26px] h-[26px] flex items-center justify-center">
+                                <svg viewBox="0 0 24 24" class="w-[22px] h-[22px]" fill="currentColor">
+                                    <path
+                                        d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                                </svg>
+                            </span>
+                            <span class="hidden lg:block text-xl">Messages</span>
+                        </a></li>
+                    <li><a class="nav-link flex items-center gap-4 justify-center lg:justify-start w-full lg:w-fit px-3 py-3 rounded-full hover:bg-gray-900 cursor-pointer transition-colors"
+                            data-page="lists" onclick="navigateTo('lists')">
+                            <span class="material-symbols-outlined text-[26px] flex-shrink-0">lists</span>
+                            <span class="hidden lg:block text-xl">Lists</span>
+                        </a></li>
+                    <li><a class="nav-link flex items-center gap-4 justify-center lg:justify-start w-full lg:w-fit px-3 py-3 rounded-full hover:bg-gray-900 cursor-pointer transition-colors"
+                            data-page="bookmarks" onclick="navigateTo('bookmarks')">
+                            <span class="relative">
+                                <span class="material-symbols-outlined text-[26px] flex-shrink-0">bookmarks</span>
+                                <span id="bookmark-badge"
+                                    class="hidden absolute -top-1 -right-1 w-4 h-4 bg-[#1d9bf0] rounded-full items-center justify-center text-[8px] font-bold text-white">0</span>
+                            </span>
+                            <span class="hidden lg:block text-xl">Bookmarks</span>
+                        </a></li>
+                    <li><a class="nav-link flex items-center gap-4 justify-center lg:justify-start w-full lg:w-fit px-3 py-3 rounded-full hover:bg-gray-900 cursor-pointer transition-colors"
+                            data-page="communities" onclick="navigateTo('communities')">
+                            <span class="material-symbols-outlined text-[26px] flex-shrink-0">group</span>
+                            <span class="hidden lg:block text-xl">Communities</span>
+                        </a></li>
+                    <li><a class="nav-link flex items-center gap-4 justify-center lg:justify-start w-full lg:w-fit px-3 py-3 rounded-full hover:bg-gray-900 cursor-pointer transition-colors"
+                            data-page="premium" onclick="navigateTo('premium')">
+                            <span class="material-symbols-outlined text-[26px] flex-shrink-0">workspace_premium</span>
+                            <span class="hidden lg:block text-xl">Premium</span>
+                        </a></li>
+                    <li><a class="nav-link flex items-center gap-4 justify-center lg:justify-start w-full lg:w-fit px-3 py-3 rounded-full hover:bg-gray-900 cursor-pointer transition-colors"
+                            data-page="profile" onclick="navigateTo('profile')">
+                            <span class="material-symbols-outlined text-[26px] flex-shrink-0">person</span>
+                            <span class="hidden lg:block text-xl">Profile</span>
+                        </a></li>
+
+                    <!-- Post button -->
+                    <li class="mt-3 px-1 lg:px-0">
+                        <button onclick="openComposeModal()"
+                            class="hidden lg:block w-full bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white text-lg font-bold py-3 px-6 rounded-full transition-colors">Post</button>
+                        <button onclick="openComposeModal()"
+                            class="lg:hidden mx-auto flex items-center justify-center bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white w-12 h-12 rounded-full transition-colors">
+                            <span class="material-symbols-outlined text-[22px]">edit</span>
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Theme switcher (desktop only) -->
+                <div class="hidden lg:flex items-center gap-1.5 px-3 mb-3 mt-2">
+                    <button onclick="setTheme('dark')" id="theme-dark" title="Dark"
+                        class="w-7 h-7 rounded-full bg-black  border-2 border-[#1d9bf0] transition-colors hover:border-[#1d9bf0]"></button>
+                    <button onclick="setTheme('dim')" id="theme-dim" title="Dim"
+                        class="w-7 h-7 rounded-full bg-[#15202b] border-2 border-gray-600 transition-colors hover:border-[#1d9bf0]"></button>
+                    <button onclick="setTheme('light')" id="theme-light" title="Light"
+                        class="w-7 h-7 rounded-full bg-white border-2 border-gray-600 transition-colors hover:border-[#1d9bf0]"></button>
+                    <span class="text-xs text-gray-500 ml-1">Theme</span>
+                </div>
+
+                <!-- User pill -->
+                <div class="px-1">
+                    <div
+                        class="flex items-center gap-3 p-3 rounded-full hover:bg-gray-900 cursor-pointer transition-colors w-fit lg:w-full">
+                        <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center flex-shrink-0">
+                            <span class="material-symbols-outlined text-[18px] text-gray-400">person</span>
+                        </div>
+                        <div class="hidden lg:block min-w-0 flex-1">
+                            <div class="font-bold text-sm truncate">Swatantra Trivedi</div>
+                            <div class="text-gray-500 text-sm truncate">@unfazedswatantra</div>
+                        </div>
+                        <span
+                            class="hidden lg:block text-gray-400 font-bold tracking-widest flex-shrink-0">------</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ===== FEED ===== -->
+        <div id="feed-wrapper" class="flex-1 min-w-0 border-x border-gray-800 min-h-screen">
+
+            <!-- Sticky tab bar (Home only) -->
+            <div id="home-tab-bar" class="sticky top-0 z-10 bg-black/80 backdrop-blur-md border-b border-gray-800">
+                <div class="tab-bar flex relative" id="tab-bar">
+                    <div class="tab-indicator" id="tab-indicator"></div>
+                    <button id="tab-foryou" onclick="switchTab('foryou')"
+                        class="flex-1 py-4 font-bold text-sm sm:text-base hover:bg-gray-900/40 transition-colors relative z-10">For
+                        You</button>
+                    <button id="tab-following" onclick="switchTab('following')"
+                        class="flex-1 py-4 font-bold text-sm sm:text-base text-gray-500 hover:bg-gray-900/40 transition-colors relative z-10">Following</button>
+                    <button
+                        class="px-3 sm:px-4 py-4 text-gray-400 hover:bg-gray-900/40 transition-colors relative z-10">
+                        <span class="material-symbols-outlined text-[20px]">settings</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Compose box (Home only) -->
+            <div class="flex gap-2 sm:gap-3 p-3 sm:p-4 border-b border-gray-800" id="compose-area">
+                <div
+                    class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-700 flex-shrink-0 flex items-center justify-center mt-1">
+                    <span class="material-symbols-outlined text-[16px] sm:text-[18px] text-gray-400">person</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <textarea id="compose-input"
+                        class="w-full bg-transparent text-white placeholder-gray-600 outline-none py-2 resize-none leading-relaxed"
+                        rows="2" placeholder="What is happening?" maxlength="280" oninput="updateCharCount(this)"
+                        style="font-size:clamp(15px,4vw,20px)"></textarea>
+                    <div
+                        class="flex items-center gap-1.5 text-[#1d9bf0] text-xs sm:text-sm font-bold mt-1 mb-2 sm:mb-3">
+                        <span class="material-symbols-outlined text-[16px] sm:text-[18px]">public</span>
+                        <span>Everyone can reply</span>
+                    </div>
+                    <div class="h-px bg-gray-800 mb-2 sm:mb-3"></div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-0 sm:gap-0.5 text-[#1d9bf0]">
+                            <button class="p-1.5 sm:p-2 rounded-full hover:bg-[#1d9bf0]/10 transition-colors"><span
+                                    class="material-symbols-outlined text-[18px] sm:text-[20px]">image</span></button>
+                            <button class="p-1.5 sm:p-2 rounded-full hover:bg-[#1d9bf0]/10 transition-colors"><span
+                                    class="material-symbols-outlined text-[18px] sm:text-[20px]">gif_box</span></button>
+                            <button class="p-1.5 sm:p-2 rounded-full hover:bg-[#1d9bf0]/10 transition-colors"><span
+                                    class="material-symbols-outlined text-[18px] sm:text-[20px]">sentiment_satisfied</span></button>
+                        </div>
+                        <div class="flex items-center gap-2 sm:gap-3">
+                            <div class="relative w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center">
+                                <svg class="char-ring w-7 h-7 sm:w-8 sm:h-8 absolute" viewBox="0 0 32 32">
+                                    <circle cx="16" cy="16" r="12" fill="none" stroke="#2f3336" stroke-width="3" />
+                                    <circle id="char-ring-fill" cx="16" cy="16" r="12" fill="none" stroke="#1d9bf0"
+                                        stroke-width="3" stroke-dasharray="75.4" stroke-dashoffset="75.4"
+                                        stroke-linecap="round" />
+                                </svg>
+                                <span id="char-count"
+                                    class="text-[9px] sm:text-[10px] text-gray-500 font-bold relative z-10"></span>
+                            </div>
+                            <button id="submit-post" onclick="submitPost()"
+                                class="bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white font-bold text-xs sm:text-sm px-4 sm:px-5 py-1.5 sm:py-2 rounded-full transition-colors">Post</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skeletons -->
+            <div id="skeletons">
+                <div class="flex gap-3 p-4 border-b border-gray-800">
+                    <div class="skeleton w-10 h-10 rounded-full flex-shrink-0"></div>
+                    <div class="flex-1 space-y-2 pt-1">
+                        <div class="skeleton h-3 w-32 rounded"></div>
+                        <div class="skeleton h-3 w-full rounded"></div>
+                        <div class="skeleton h-3 w-3/4 rounded"></div>
+                    </div>
+                </div>
+                <div class="flex gap-3 p-4 border-b border-gray-800">
+                    <div class="skeleton w-10 h-10 rounded-full flex-shrink-0"></div>
+                    <div class="flex-1 space-y-2 pt-1">
+                        <div class="skeleton h-3 w-24 rounded"></div>
+                        <div class="skeleton h-3 w-full rounded"></div>
+                        <div class="skeleton h-36 w-full rounded-xl mt-1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Router page content -->
+            <div id="page-content"></div>
+
+        </div>
+
+        <!-- ===== RIGHT SIDEBAR (lg+ only) ===== -->
+        <div id="right-sidebar"
+            class="hidden lg:flex flex-col w-[290px] xl:w-[340px] 2xl:w-[380px] flex-shrink-0 px-3 xl:px-4 pt-2 sticky top-0 h-screen no-scroll">
+
+            <!-- Search -->
+            <div class="relative mb-4 flex-shrink-0">
+                <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-[20px] pointer-events-none">search</span>
+                <input type="text" oninput="filterPosts(this.value)"
+                    class="w-full bg-[#202327] hover:bg-[#2f3336] focus:bg-black text-white pl-10 pr-4 py-2.5 rounded-full placeholder-gray-500 outline-none focus:ring-2 focus:ring-[#1d9bf0] border border-transparent focus:border-[#1d9bf0] transition-all text-sm"
+                    placeholder="Search posts...">
+            </div>
+
+            <!-- Trending -->
+            <div class="bg-[#16181c] rounded-2xl mb-4 overflow-hidden flex-shrink-0">
+                <h2 class="text-xl font-bold px-4 pt-4 pb-1">What's happening</h2>
+                <div class="px-4 py-3 hover:bg-gray-800/60 cursor-pointer transition-colors">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="text-xs text-gray-500">Trending in India</div>
+                        <span
+                            class="badge-breaking text-[9px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">&#x1F534;
+                            BREAKING</span>
+                    </div>
+                    <div class="font-bold text-sm mt-0.5">#React20</div>
+                    <div class="text-xs text-gray-500">125k Posts</div>
+                </div>
+                <div class="px-4 py-3 hover:bg-gray-800/60 cursor-pointer transition-colors">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="text-xs text-gray-500">Technology &middot; Trending</div>
+                        <span
+                            class="badge-hot text-[9px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">&#x1F525;
+                            HOT</span>
+                    </div>
+                    <div class="font-bold text-sm mt-0.5">#TypeScript</div>
+                    <div class="text-xs text-gray-500">89k Posts</div>
+                </div>
+                <div class="px-4 py-3 hover:bg-gray-800/60 cursor-pointer transition-colors">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="text-xs text-gray-500">Trending in India</div>
+                        <span
+                            class="badge-new text-[9px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">&#x1F7E2;
+                            NEW</span>
+                    </div>
+                    <div class="font-bold text-sm mt-0.5">#NextJS15</div>
+                    <div class="text-xs text-gray-500">78k Posts</div>
+                </div>
+                <div class="px-4 py-3 hover:bg-gray-800/60 cursor-pointer transition-colors">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="text-xs text-gray-500">Sports &middot; Trending</div>
+                        <span
+                            class="badge-hot text-[9px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">&#x1F525;
+                            HOT</span>
+                    </div>
+                    <div class="font-bold text-sm mt-0.5">#IPL2026</div>
+                    <div class="text-xs text-gray-500">567k Posts</div>
+                </div>
+                <div onclick="navigateTo('explore')"
+                    class="px-4 py-3 text-[#1d9bf0] text-sm hover:bg-gray-800/60 cursor-pointer transition-colors rounded-b-2xl">
+                    Show more</div>
+            </div>
+
+            <!-- Who to follow -->
+            <div class="bg-[#16181c] rounded-2xl mb-4 overflow-hidden flex-shrink-0">
+                <h2 class="text-xl font-bold px-4 pt-4 pb-1">Who to follow</h2>
+                <div
+                    class="flex items-center justify-between px-4 py-3 hover:bg-gray-800/60 cursor-pointer transition-colors">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <img class="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                            src="https://i.pravatar.cc/150?img=4" alt="">
+                        <div class="min-w-0">
+                            <div class="font-bold text-sm truncate">Priya Sharma</div>
+                            <div class="text-gray-500 text-xs">@priyabuilds</div>
+                        </div>
+                    </div>
+                    <button onclick="toggleFollow(this)"
+                        class="flex-shrink-0 ml-2 bg-white hover:bg-gray-200 text-black text-sm font-bold px-4 py-1.5 rounded-full transition-colors">Follow</button>
+                </div>
+                <div
+                    class="flex items-center justify-between px-4 py-3 hover:bg-gray-800/60 cursor-pointer transition-colors">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <img class="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                            src="https://i.pravatar.cc/150?img=5" alt="">
+                        <div class="min-w-0">
+                            <div class="font-bold text-sm truncate">Fireship</div>
+                            <div class="text-gray-500 text-xs">@firaborat</div>
+                        </div>
+                    </div>
+                    <button onclick="toggleFollow(this)"
+                        class="flex-shrink-0 ml-2 bg-white hover:bg-gray-200 text-black text-sm font-bold px-4 py-1.5 rounded-full transition-colors">Follow</button>
+                </div>
+                <div
+                    class="flex items-center justify-between px-4 py-3 hover:bg-gray-800/60 cursor-pointer transition-colors">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <img class="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                            src="https://i.pravatar.cc/150?img=11" alt="">
+                        <div class="min-w-0">
+                            <div class="font-bold text-sm truncate">GitHub</div>
+                            <div class="text-gray-500 text-xs">@github</div>
+                        </div>
+                    </div>
+                    <button onclick="toggleFollow(this)"
+                        class="flex-shrink-0 ml-2 bg-white hover:bg-gray-200 text-black text-sm font-bold px-4 py-1.5 rounded-full transition-colors">Follow</button>
+                </div>
+                <div
+                    class="px-4 py-3 text-[#1d9bf0] text-sm hover:bg-gray-800/60 cursor-pointer transition-colors rounded-b-2xl">
+                    Show more</div>
+            </div>
+
+            <!-- Footer links -->
+            <div class="text-xs text-gray-700 flex flex-wrap gap-x-2 gap-y-1 px-1 pb-4 mt-auto">
+                <a href="#" class="hover:underline text-gray-600">Terms</a>
+                <a href="#" class="hover:underline text-gray-600">Privacy</a>
+                <a href="#" class="hover:underline text-gray-600">Cookies</a>
+                <a href="#" class="hover:underline text-gray-600">Accessibility</a>
+                <span class="w-full text-gray-700 mt-1">&copy; 2026 X Clone (by Swatantra) &middot; For Learning
+                    Only</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ===================== COMPOSE MODAL ===================== -->
+    <div id="compose-modal"
+        class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm items-center justify-center p-4"
+        onclick="if(event.target===this)closeComposeModal()">
+        <div class="bg-black border border-gray-800 rounded-2xl w-full max-w-lg p-4">
+            <div class="flex justify-between items-center mb-3">
+                <button onclick="closeComposeModal()" class="p-2 rounded-full hover:bg-gray-900"><span
+                        class="material-symbols-outlined">close</span></button>
+            </div>
+            <div class="flex gap-3">
+                <div class="w-10 h-10 rounded-full bg-gray-700 flex-shrink-0 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[18px] text-gray-400">person</span>
+                </div>
+                <div class="flex-1">
+                    <textarea id="modal-compose-input"
+                        class="w-full bg-transparent text-white placeholder-gray-600 outline-none py-2 resize-none text-lg leading-relaxed"
+                        rows="4" placeholder="What is happening?" maxlength="280"></textarea>
+                    <div class="flex justify-end mt-3">
+                        <button onclick="submitModalPost()"
+                            class="bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white font-bold px-6 py-2 rounded-full transition-colors">Post</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== SCRIPTS ===================== -->
+    <script src="./js/data.js"></script>
+    <script src="./js/pages.js"></script>
+    <script src="./js/router.js"></script>
+</body>
+
+</html>
